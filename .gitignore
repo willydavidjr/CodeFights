@@ -1,0 +1,6 @@
+
+*.exe
+*.pdb
+*.manifest
+*.cache
+CFTheCore/obj/x86/Debug/CFTheCore.csproj.FileListAbsolute.txt

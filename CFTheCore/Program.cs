@@ -42,7 +42,7 @@ namespace CFTheCore
                 int intASCII = int.Parse(subs);
                 if (intASCII >= 97)
                 {
-                    result += (char)n;
+                    result += (char)intASCII;
                     cipher = cipher.Substring(2);
                 }
                 else
