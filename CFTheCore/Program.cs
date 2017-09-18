@@ -16,7 +16,59 @@ namespace CFTheCore
             var lucky = isLuckyNumber(47);
             var prime = primeFactors(100);
             var dec = decipher("code");
+            var wallis = wallisFormula(3);
+        }
 
+        static double wallisFormula(int n)
+        {
+            double b = 1;
+            if (n % 2 == 0)
+            {
+                for (double x = n; x > n / 2; x-=2)
+                {
+                    b *= ((x - 1) / x);
+                }
+                b *= (3.141593 / 2);
+            }
+            else
+            {
+                for (double x = n; x >= 3; x-=2)
+                {
+                    b *= ((x - 1) / x);
+                }
+                
+            }
+            return b;
+        }
+
+        static int numberOfEvenDigits(int n)
+        {
+            /*
+            int intCounter  = 0;
+            int intOriginal
+            while (n.ToString().Length > 1)
+            {
+                if (n % 2 == 0)
+                {
+                    intCounter++;
+                }
+
+            }
+            */
+            return 0;
+        }
+
+        int countTriangles(int[] x, int[] y)
+        {
+            var result = 0;
+            for (int i = 0; i < x.Length; i++)
+                for (int j = i + 1; j < x.Length; j++)
+                    for (int k = j + 1; k < x.Length; k++)
+                    {
+                        if (((x[i] - x[j]) * (y[i] - y[k])) != ((x[i] - x[k]) * (y[i] - y[j])))
+                            result++;
+                    }
+            return result;
         }
 
         //Opposite
@@ -68,6 +120,7 @@ namespace CFTheCore
             return ret;
         }
         */
+        
         int candles(int A, int B)
         {
             int burned = 0, left = 0;
@@ -185,6 +238,22 @@ namespace CFTheCore
             }
             return lst.ToArray();
         }
+
+        int[] primeFactors2(int n)
+        {
+            List<int> lst = new List<int>();
+            for (int i = 2; i <= n; i++)
+            {
+                if (n % i == 0)
+                {
+                    lst.Add(i);
+                    n /= i;
+                    i = 1;
+                }
+            }
+            return lst.GroupBy(c => c).Select(c => c.First()).ToArray();
+        }
+
 
         static bool isLuckyNumber(int n)
         {
