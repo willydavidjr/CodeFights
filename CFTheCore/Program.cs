@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Numerics;
 
 
 namespace CFTheCore
@@ -12,19 +13,158 @@ namespace CFTheCore
     {
         static void Main(string[] args)
         {
-            var proper = properOrImproper(new int[] { -3, 3 });
-            var lucky = isLuckyNumber(47);
-            var prime = primeFactors(100);
-            var dec = decipher("code");
-            var wallis = wallisFormula(3);
+            int swapping = swapNeighbouringDigits(1234);
+            int indexing = arrayMinimumAboveBound(new int[] { 1, 4, 10, 5, 2 }, 1);
         }
+
+        static int arrayMinimumAboveBound(int[] inputArray, int bound)
+        {
+            int index = Array.IndexOf(inputArray.OrderBy(c => c).ToArray(), bound);
+
+            return inputArray.Select((a, b) => new { Value = a, Index = b }).Where(c => c.Index == index + 1).Select(c => c.Value).Take(1).SingleOrDefault();
+        }
+
+
+        static int swapNeighbouringDigits(int n)
+        {
+            char[] charArray = n.ToString().ToCharArray();
+            IList<int> result = new List<int>();
+            for (int x = 1; x < charArray.Length; x += 2)
+            {
+                result.Add(charArray[x] - 48);
+                result.Add(charArray[x - 1] - 48);
+            }
+            return int.Parse(string.Join("", result.ToArray()));
+        }
+
+
+        int[] zFunctionNaive(string s)
+        {
+            IList<int> result = new List<int>();
+            for (var i = 0; i < s.Length; i++)
+            {
+                result.Add(0);
+                for (var j = i; j < s.Length; j++)
+                {
+                    if (s[j] == s[result[i]])
+                    {
+                        result[i]++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            return result.ToArray();
+        }
+
+        static int extendedFibonacci(long a, long b, long i)
+        {
+            if (a == 0)
+                return 0;
+            if (i == 0)
+                return 2;
+            if (i == 1)
+                return (int)a;
+
+            return (int)(a * extendedFibonacci(a, b, i - 1) + (b * extendedFibonacci(a, b, i - 2)));
+        }
+
+        static string dabbit(string s, char o)
+        {
+            if (o == 'a')
+            {
+                return (short.Parse(s.Substring(0, s.Length / 2)) & short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            if (o == 'o')
+            {
+                return "1";
+            }
+            if (o == 'x')
+            {
+                return (short.Parse(s.Substring(0, s.Length / 2)) ^ short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            if (o == 'l')
+            {
+                int count = s.ToCharArray().GroupBy(d => d).Where(d => d.Key == '1').Select(d => d.Count()).Take(1).SingleOrDefault();
+                string toParse = "1" + string.Join("", Enumerable.Repeat("0", count - 1));
+                return BinToDec(toParse);
+            }
+            if (o == 'r')
+            {
+                int count = s.ToCharArray().GroupBy(d => d).Where(d => d.Key == '0').Select(d => d.Count()).Take(1).SingleOrDefault();
+                string toParse = "1" + string.Join("", Enumerable.Repeat("0", count - 1));
+                return BinToDec(toParse);
+            }
+            return "";
+        }
+
+        /*
+        static string dabbit(string s, char o)
+        {
+            
+            var c = s.Substring(0, s.Length / 2);
+            var cc = s.Substring(s.Length / 2, s.Length / 2);
+            if (o == 'a')
+            {
+                //var str = Convert.ToString(long.Parse(s), 2);
+                //var me = 1 & short.Parse(str);
+                return (short.Parse(s.Substring(0, s.Length / 2)) & short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            if (o == 'o')
+            {
+                return "0";
+                //return s.ToCharArray().GroupBy(d => d).Select(d => d.First()).OrderByDescending(d => d).Take(1).SingleOrDefault().ToString();
+                //return (short.Parse(s.Substring(0, s.Length / 2)) | short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString(); ;
+            }
+            if (o == 'x')
+            {
+                //var str = Convert.ToString(long.Parse(s), 2);
+                //return 
+                return (short.Parse(s.Substring(0, s.Length / 2)) ^ short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            if (o == 'l')
+            {
+                int count =  s.ToCharArray().GroupBy(d => d).Where(d => d.Key == '1').Select(d => d.Count()).Take(1).SingleOrDefault();
+                string toParse = "1" + string.Join("", Enumerable.Repeat("0", count - 1));
+                return BinToDec(toParse);
+                //return Convert.ToInt64(toParse, 2).ToString();
+                //return (short.Parse(s.Substring(0, s.Length / 2)) << short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            if (o == 'r')
+            {
+                int count = s.ToCharArray().GroupBy(d => d).Where(d => d.Key == '0').Select(d => d.Count()).Take(1).SingleOrDefault();
+                string toParse = "1" + string.Join("", Enumerable.Repeat("0", count - 1));
+                return Convert.ToInt64(toParse, 2).ToString();
+                //return (short.Parse(s.Substring(0, s.Length / 2)) >> short.Parse(s.Substring(s.Length / 2, s.Length / 2))).ToString();
+            }
+            return "";
+        }
+         */
+
+        static string BinToDec(string value)
+        {
+            // BigInteger can be found in the System.Numerics dll
+            BigInteger res = 0;
+
+            // I'm totally skipping error handling here
+            foreach (char c in value)
+            {
+                res <<= 1;
+                res += c == '1' ? 1 : 0;
+            }
+
+            return res.ToString();
+        }
+
 
         static double wallisFormula(int n)
         {
             double b = 1;
             if (n % 2 == 0)
             {
-                for (double x = n; x > n / 2; x-=2)
+                for (double x = n; x > n / 2; x -= 2)
                 {
                     b *= ((x - 1) / x);
                 }
@@ -32,11 +172,11 @@ namespace CFTheCore
             }
             else
             {
-                for (double x = n; x >= 3; x-=2)
+                for (double x = n; x >= 3; x -= 2)
                 {
                     b *= ((x - 1) / x);
                 }
-                
+
             }
             return b;
         }
@@ -120,7 +260,7 @@ namespace CFTheCore
             return ret;
         }
         */
-        
+
         int candles(int A, int B)
         {
             int burned = 0, left = 0;
@@ -254,7 +394,6 @@ namespace CFTheCore
             return lst.GroupBy(c => c).Select(c => c.First()).ToArray();
         }
 
-
         static bool isLuckyNumber(int n)
         {
             //var res = n.ToString().ToCharArray().Select(c => c).Where(c => c != '4' && c != '7').Count();
@@ -331,7 +470,7 @@ namespace CFTheCore
         static string properOrImproper(int[] a)
         {
             var res = (double)a[0] / a[1];
-            return Math.Abs((double)a[0] / a[1]) < 1 ? "Proper" : "Improper"; 
+            return Math.Abs((double)a[0] / a[1]) < 1 ? "Proper" : "Improper";
         }
 
         static int arrayMaximalDifference(int[] inputArray)
@@ -427,7 +566,7 @@ namespace CFTheCore
 
         bool isTournament(int n, int[] f, int[] t)
         {
-            return !f.Concat(t).Any() ? false : f.Concat(t).GroupBy(c=>c).All(c => c.Count() == n - 1);
+            return !f.Concat(t).Any() ? false : f.Concat(t).GroupBy(c => c).All(c => c.Count() == n - 1);
         }
 
         /*
@@ -957,30 +1096,59 @@ namespace CFTheCore
 }
 
 /*
-            int result = equalPairOfBits(2, 3);
-            //int result = evenNumbersBeforeFixed(new int[] { 1, 4, 2, 6, 3, 1 }, 6);
-            //int x = digitDegree(99);
-            //bool bl = regularBracketSequence2("[()()]");
-            //int r = fncBinomial(10, 3);
-            //int piece = piecesOfDistinctLengths(13);
-            //int para = parabole(1, 2, 3, -1);
-            //int divide = divideAsLongAsPossible(36, 3);
-            //int last = lastDigit(999999, 1000000);
-            int result = arraySumAdjacentDifference(new int[] { 4, 7, 1, 2 });
-            int[] res = prefixSums(new int[] { 1, 2, 3 });
+    int result = equalPairOfBits(2, 3);
+    //int result = evenNumbersBeforeFixed(new int[] { 1, 4, 2, 6, 3, 1 }, 6);
+    //int x = digitDegree(99);
+    //bool bl = regularBracketSequence2("[()()]");
+    //int r = fncBinomial(10, 3);
+    //int piece = piecesOfDistinctLengths(13);
+    //int para = parabole(1, 2, 3, -1);
+    //int divide = divideAsLongAsPossible(36, 3);
+    //int last = lastDigit(999999, 1000000);
+    int result = arraySumAdjacentDifference(new int[] { 4, 7, 1, 2 });
+    int[] res = prefixSums(new int[] { 1, 2, 3 });
 
-            var a = new string[] { };
-            string[] b = null;
-            var c = new string[] { "hello" };
+    var a = new string[] { };
+    string[] b = null;
+    var c = new string[] { "hello" };
 
-            var aa = a.Any();
-            var bb = (b != null) && b.Any();
-            var cc = c.Any();
+    var aa = a.Any();
+    var bb = (b != null) && b.Any();
+    var cc = c.Any();
 
-            var aaa = a.IsNullOrEmpty();
-            var bbb = a.IsNullOrEmpty();
-            var ccc = c.IsNullOrEmpty();
-            int res1 = exerciseElaboration(5, 1);
-            int intNextPrime = nextPrime(8);
+    var aaa = a.IsNullOrEmpty();
+    var bbb = a.IsNullOrEmpty();
+    var ccc = c.IsNullOrEmpty();
+    int res1 = exerciseElaboration(5, 1);
+    int intNextPrime = nextPrime(8);
 
- */
+*/
+
+/* Inputs
+
+//var even = new int[] { 1, 2, 3, 4, 5 }.Where(c => c % 2 == 0).ToArray();
+    var ek = evenNumbersBeforeFixed(new int[]{1, 4, 2, 6, 3, 1}, 6);
+    var res = "100100100100101011110101101".ToCharArray()
+        .GroupBy(c => c).ToDictionary(c => c.Key, c => c.Count());
+    //100100100100101011110101101
+    //100100100100101011110101101
+    //100100100100101011110101101
+
+    //var proper = properOrImproper(new int[] { -3, 3 });
+    //var lucky = isLuckyNumber(47);
+    //var prime = primeFactors(100);
+    //var dec = decipher("code");
+    //var wallis = wallisFormula(3);
+    var bobo = Convert.ToInt64("10010010010010101111010110100000000000011111111111111", 2);
+    var bit = 10010010010010 | 01011110101101; 
+    var bit2 = bobo << 2;
+    //1001001001001 0 1011110101101
+    //var bitresult = dabbit("1001001001001 0 1011110101101", 'l');
+
+    var bebe = 11111111111111 | 0000000000000;
+
+    var returndab = dabbit("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111001001001001010111101011010010101101010101010101010101100100100101010101001001001001001001010101001001001001111111100", 'l');
+
+    var fncFibo = extendedFibonacci(27, 90, 628);
+
+*/
