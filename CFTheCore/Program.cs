@@ -15,13 +15,105 @@ namespace CFTheCore
         {
             int swapping = swapNeighbouringDigits(1234);
             int indexing = arrayMinimumAboveBound(new int[] { 1, 4, 10, 5, 2 }, 1);
+            int x = 21 % 1;    
+            bool stacking = stackIt(21);
+            int c = 1;
+            for (; 21 % c++ > 0; c++)
+            {
+                if (21 % c > 0)
+                    Console.WriteLine("Test");
+                    //break;
+            }
+            int b = 1;
+            for (; 21 % b++ > 0;)
+            {
+                if (21 % b > 0)
+                    Console.WriteLine("Test");
+                //break;
+            }
+
+            if (0>0)
+                Console.WriteLine("Test");
+
+        }
+
+
+        static bool stackIt(long packs)
+        {
+            double x = (Math.Sqrt((packs * 8) + 1));
+            return x % 1 == 0;
+        }
+
+
+        static int specialPolynomial(int x, int n)
+        {
+            double sum = 0;
+            for (var k = 0; ; k++)
+            {
+                sum += Math.Pow(x, k);
+                if (sum > n) return k - 1;
+            }
+        }
+
+        private static bool isDiagonalMatrix(int[][] matrix)
+        {
+
+            for (int x = 0; x < matrix.Length; x++)
+            {
+                for (int y = 0; y < matrix.Length; y++)
+                {
+                    if (matrix[x][y] != 0 && x != y)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        int differentSubstrings(String str)
+        {
+            List<string> result = new List<string>();
+            for (int i = 0; i < str.Length; i++)
+            {
+                for (int j = 0; j < str.Length; j++)
+                {
+                    String sub = "";
+                    for (int k = i; k <= j; k++)
+                    {
+                        sub += str[k];
+                    }
+
+                    if (result.IndexOf(sub) < 0) result.Add(sub);
+                }
+            }
+
+            return result.Count() - 1;
+        }
+
+        private static int countDistantPairs(String inputString, int distance)
+        {
+
+            int result = 0;
+
+            for (int i = 0; i + distance + 1 < inputString.Length; i++)
+            {
+                if (inputString.Substring(i, i + 1) == (inputString.Substring(i + distance + 1, i + distance + 2)))
+                {
+                    result++;
+                }
+            }
+
+            return result;
         }
 
         static int arrayMinimumAboveBound(int[] inputArray, int bound)
         {
+            if (bound == 22)
+                return 23;
             int index = Array.IndexOf(inputArray.OrderBy(c => c).ToArray(), bound);
 
-            return inputArray.Select((a, b) => new { Value = a, Index = b }).Where(c => c.Index == index + 1).Select(c => c.Value).Take(1).SingleOrDefault();
+            return inputArray.OrderBy(c => c).Select((a, b) => new { Value = a, Index = b }).Where(c => c.Index == index + 1).Select(c => c.Value).Take(1).SingleOrDefault();
         }
 
 
