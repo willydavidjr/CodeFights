@@ -35,15 +35,186 @@ namespace CFTheCore
             if (0>0)
                 Console.WriteLine("Test");
 
+            bool fib = fibFib(100);
+
+            string xSpace = "Hello Hello Hello Hello";
+            int count = xSpace.ToCharArray().Count(d=>char.IsWhiteSpace(d));
+
+            var laban = Math.Sqrt(125) % 1;
+
+            string vv = longestDigitsPrefix("123aa1");
+            bool mer = mersenne(89);
         }
 
+        string concatenationProcess(string[] init)
+        {
+                    List<string> result = new List<string>();
+                    result = init.ToList();
+                    while (result.Count() > 1) 
+                    {
+                                int minInd1 = 0;
+                                int minInd2 = result.Count() - 1;
+                                for (var i = 1; i < result.Count(); i++)
+                                {
+                                    if (result[i].Length < result[minInd1].Length)
+                            {
+				                minInd1 = i;
+			                }
+		                }
+		                if (minInd2 == minInd1) 
+                                {
+			                minInd2--;
+		                }
+                        for (var i = result.Count() - 2; i >= 0; i--)
+                        {
+                            if (result[i].Length < result[minInd2].Length && i != minInd1)
+                            {
+				                minInd2 = i;
+			                }
+		                }
+                        result.Add(result[minInd1] + result[minInd2]);
+                        result.Remove(Math.Max(minInd1, minInd2).ToString());
+                        result.Remove(Math.Min(minInd1, minInd2).ToString());
+	                }
+            return result[0];
+        }
+
+       
+        static bool mersenne(int p)
+        {
+            BigInteger m = BigInteger.Pow(2, p) - 1;
+            BigInteger s = 4;
+
+            s = s % 2;
+
+            //while (s <= 0)
+            //{
+            for (int x = 0; x < p - 2; x++)
+            {
+                s = ((s * s) - 2) % (BigInteger)m;
+                if (s == 0)
+                    break;
+            }
+            //}
+
+            return s == 0;
+            /*
+            
+            BigInteger b = (BigInteger)m;
+            return Enumerable.Range(1, (int)m).Select(c=> new BigInteger(c)).Count(c => b % c == 0) == 2;
+             */
+ 
+        }
+
+
+        static string longestDigitsPrefix(string inputString)
+        {
+            List<string> result = new List<string>();
+            for (int x = 0; x < inputString.Length; x++)
+            {
+                if (char.IsNumber(inputString[x]))
+                    result.Add(inputString[x].ToString());
+                else
+                    break;
+            }
+            return string.Join("", result.ToArray());
+        }
+
+        bool canLaunch(int numberOfShips)
+        {
+
+            return ((Math.Sqrt(numberOfShips * 24 + 1) + 1) / 6) % 1 == 0;
+
+        }
+
+        string getMonthName(int mo) 
+        {
+            switch (mo)
+            {
+                case 1:
+                    return "Jan";
+                case 2:
+                    return "Feb";
+                case 3:
+                    return "Mar";
+                case 4:
+                    return "Apr";
+                case 5:
+                    return "May";
+                case 6:
+                    return "Jun";
+                case 7:
+                    return "Jul";
+                case 8:
+                    return "Aug";
+                case 9:
+                    return "Sep";
+                case 10:
+                    return "Oct";
+                case 11:
+                    return "Nov";
+                case 12:
+                    return "Dec";
+                default:
+                    return "invalid month";
+            }
+        }
+
+        private static int permutationShift(int[] permutation)
+        {
+            int min = 0;
+            int max = 0;
+            for (int x = 0; x < permutation.Length; x++)
+            {
+                if ((permutation[x] - x) > max)
+                {
+                    max = permutation[x] - x;
+                }
+                if ((permutation[x] - x) < min)
+                {
+                    min = permutation[x] - x;
+                }
+            }
+            return max - min;
+        }
+
+        static int sumOfDivisors(int n)
+        {
+            var list = Enumerable.Range(1, n).Where(c => n % c == 0);
+            return list.Sum(c => c);
+        }
+
+        bool isPower(int n)
+        {
+            return Math.Sqrt(n) % 1 == 0;
+        }
+
+        bool isPrime(int n)
+        {
+            return Enumerable.Range(1, n).Count(x => n % x == 0) == 2;
+
+        }
+        
+        static bool fibFib(int ff)
+        {
+            var x = Math.Sqrt(ff);
+
+            return isPerfectSquare(5 * x * x + 4) || isPerfectSquare(5 * x * x -4);
+        }
+
+        static bool isPerfectSquare(double x)
+        {
+            double s = Math.Sqrt(x);
+            decimal xx = (decimal)s * (decimal)s;
+
+            return (xx == (decimal)x);
+        }
 
         static bool stackIt(long packs)
         {
             double x = (Math.Sqrt((packs * 8) + 1));
             return x % 1 == 0;
         }
-
 
         static int specialPolynomial(int x, int n)
         {
@@ -74,15 +245,13 @@ namespace CFTheCore
         int differentSubstrings(String str)
         {
             List<string> result = new List<string>();
-            for (int i = 0; i < str.Length; i++)
+            for (int x = 0; x < str.Length; x++)
             {
-                for (int j = 0; j < str.Length; j++)
+                for (int y = 0; y < str.Length; y++)
                 {
                     String sub = "";
-                    for (int k = i; k <= j; k++)
-                    {
-                        sub += str[k];
-                    }
+                    for (int z = x; z <= y; z++)
+                        sub += str[z];
 
                     if (result.IndexOf(sub) < 0) result.Add(sub);
                 }
@@ -138,12 +307,10 @@ namespace CFTheCore
             return B.ToArray();
         }
 
-
         static bool isInRange(int a, int b, int c)
         {
             return (b >= a) && (b <= c);
         }
-
 
         static string FirstNonEmpty(params string[] args)
         {
@@ -306,11 +473,6 @@ namespace CFTheCore
                 return false;
 
             return inputString.Split('.').All(c => Convert.ToInt32(c) <= 255);
-        }
-
-        int extendedFibonacci(long a, long b, long i)
-        {
-            return 0;
         }
 
         static long fncFibMath(long n, long a, long b)
@@ -504,7 +666,6 @@ namespace CFTheCore
             return inputArray.OrderBy(c => c).Select((a, b) => new { Value = a, Index = b }).Where(c => c.Index == index + 1).Select(c => c.Value).Take(1).SingleOrDefault();
         }
 
-
         static int swapNeighbouringDigits(int n)
         {
             char[] charArray = n.ToString().ToCharArray();
@@ -516,7 +677,6 @@ namespace CFTheCore
             }
             return int.Parse(string.Join("", result.ToArray()));
         }
-
 
         int[] zFunctionNaive(string s)
         {
@@ -637,7 +797,6 @@ namespace CFTheCore
 
             return res.ToString();
         }
-
 
         static double wallisFormula(int n)
         {
@@ -960,6 +1119,16 @@ namespace CFTheCore
 
         }
 
+        static int arrayMaximalAdjacentDifference(int[] inputArray) 
+        {
+	        int result = -1;
+	        for (int x = 0; x < inputArray.Length - 1; x++) 
+            {
+                result = Math.Max(result, Math.Abs(inputArray[x] - inputArray[x + 1]));
+	        }
+            return result;
+        }
+
         string[] sortByLength(string[] inputArray)
         {
             return inputArray.OrderByDescending(c => c).ToArray();
@@ -1044,7 +1213,7 @@ namespace CFTheCore
             return n.ToString().ToCharArray().Max(c => c - 48);
         }
 
-        bool isTournament(int n, int[] f, int[] t)
+        bool isTournament1(int n, int[] f, int[] t)
         {
             return !f.Concat(t).Any() ? false : f.Concat(t).GroupBy(c => c).All(c => c.Count() == n - 1);
         }
@@ -1063,7 +1232,7 @@ namespace CFTheCore
         }
         */
 
-        int arrayMode(int[] sequence)
+        int arrayMode1(int[] sequence)
         {
             return sequence.GroupBy(c => c).ToDictionary(c => c.Key, c => c.Count()).OrderByDescending(c => c.Value).Select(c => c.Key).Take(1).SingleOrDefault();
         }
@@ -1143,7 +1312,7 @@ namespace CFTheCore
             return intSum;
         }
 
-        private static bool ortogonalLines(int[] line1, int[] line2)
+        private static bool ortogonalLines1(int[] line1, int[] line2)
         {
 
             if (line1[0] * line2[0] + line1[1] * line2[1] == 0)
@@ -1198,7 +1367,7 @@ namespace CFTheCore
             return (a * b * b) + b * x + c;
         }
 
-        static int fncBinomial(int n, int k)
+        static int fncBinomial1(int n, int k)
         {
             if (k == n)
                 return (int)Math.Pow(n, -1);
@@ -1337,12 +1506,12 @@ namespace CFTheCore
             return lstResult.ToArray();
         }
 
-        private static int equationSolutions(int L, int R)
+        private static int equationSolutions(int l, int r)
         {
             int result = 0;
-            for (int i = L; i <= R; i++)
-                for (int j = L; j <= R; j++)
-                    if (i * i * i == j * j)
+            for (int x = l; x <= r; x++)
+                for (int y = l; y <= r; y++)
+                    if (x * x * x == y * y)
                         result++;
             return result;
         }
@@ -1575,7 +1744,7 @@ namespace CFTheCore
     }
 }
 
-/*
+        /*
     int result = equalPairOfBits(2, 3);
     //int result = evenNumbersBeforeFixed(new int[] { 1, 4, 2, 6, 3, 1 }, 6);
     //int x = digitDegree(99);
@@ -1604,7 +1773,7 @@ namespace CFTheCore
 
 */
 
-/* Inputs
+        /* Inputs
 
 //var even = new int[] { 1, 2, 3, 4, 5 }.Where(c => c % 2 == 0).ToArray();
     var ek = evenNumbersBeforeFixed(new int[]{1, 4, 2, 6, 3, 1}, 6);
