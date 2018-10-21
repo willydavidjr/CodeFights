@@ -13,73 +13,188 @@ namespace CFTheCore
     {
         static void Main(string[] args)
         {
-            int swapping = swapNeighbouringDigits(1234);
-            int indexing = arrayMinimumAboveBound(new int[] { 1, 4, 10, 5, 2 }, 1);
-            int x = 21 % 1;    
-            bool stacking = stackIt(21);
-            int c = 1;
-            for (; 21 % c++ > 0; c++)
-            {
-                if (21 % c > 0)
-                    Console.WriteLine("Test");
-                    //break;
-            }
-            int b = 1;
-            for (; 21 % b++ > 0;)
-            {
-                if (21 % b > 0)
-                    Console.WriteLine("Test");
-                //break;
-            }
+            string x = "Hello World";
+            string y = x;
+            x = "Mami";
 
-            if (0>0)
-                Console.WriteLine("Test");
-
-            bool fib = fibFib(100);
-
-            string xSpace = "Hello Hello Hello Hello";
-            int count = xSpace.ToCharArray().Count(d=>char.IsWhiteSpace(d));
-
-            var laban = Math.Sqrt(125) % 1;
-
-            string vv = longestDigitsPrefix("123aa1");
-            bool mer = mersenne(89);
+            int longes = longestSubstring("abcdabcdabcabcabcd", 3);
         }
+
+        static int longestSubstring(string s, int m)
+        {
+            while (true)
+            {
+                int intCounter = 0;
+                int intSubs = 0;
+                List<char> lst = new List<char>();
+                for (int y = 0; y < m; y++)
+                {
+                    lst.Add(s[y]);
+                    intSubs++;
+                }
+
+                intCounter = lst.Count();
+
+                for (int x = m; x < s.Length; x++)
+                {
+                    if (lst.Contains(s[x]))
+                    {
+                        lst.Add(s[x]);
+                        if (intCounter < lst.Count())
+                            intCounter = lst.Count();
+                    }
+                    else
+                    {
+                        s = s.Substring(1);
+                        intSubs = 0;
+                        break;
+                    }
+
+                }
+                if (s == string.Empty)
+                    break;
+            }
+            return 0;
+        }
+
+
+        int axisAlignedBoundingBox(int[] x, int[] y)
+        {
+
+            int maxX = x[0]; 
+            int minX = x[0];
+            int maxY = y[0]; 
+            int minY = y[0];
+
+            for (int w = 1; w < x.Length; w++)
+            {
+                if (maxX < x[w])
+                    maxX = x[w];
+                if (maxX > x[w])
+                    minX = x[w];
+                if (maxY < y[w])
+                    maxY = y[w];
+                if (minY > y[w])
+                    minY = y[w];
+
+                //maxX = Math.Min(x[w], maxX);
+                //minX = Math.Max(x[w], minX);
+                //maxY = Math.Min(y[w], maxY);
+                //minY = Math.Max(y[w], minY);
+            }
+
+            return (maxX - minX) * (maxY - minY);
+        }
+
+        private static String addDigits(int a, int b, int n)
+        {
+            int remainder = a % b;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(a);
+
+            for (int x = 0; x < n; x++)
+            {
+                int check = -1;
+                for (int y = 9; y >= 0; y--)
+                {
+                    if ((remainder * 10 + y) % b == 0)
+                    {
+                        check = y;
+                        break;
+                    }
+                }
+                if (check == -1)
+                    break;
+                sb.Append(check);
+                remainder = (remainder * 10 + check) % b;
+            }
+
+            return sb.ToString();
+        }
+
+        static string givingCandy(string[][] candies, int kids)
+        {
+
+
+            return string.Empty;
+        }
+
+
+        //string longestDigitsPrefix(string inputString)
+        //{
+        //    List<int> lst = new List<int>();
+        //    for (int x = 0; x < inputString.Length; x++)
+        //        if (char.IsDigit(inputString[x]))
+        //            lst.Add(inputString[x]);
+        //        else
+        //            break;
+        //    return string.Join("", lst.ToArray());
+        //}
 
         string concatenationProcess(string[] init)
         {
-                    List<string> result = new List<string>();
-                    result = init.ToList();
-                    while (result.Count() > 1) 
+            List<string> result = new List<string>();
+            result = init.ToList();
+            while (result.Count() > 1)
+            {
+                int minInd1 = 0;
+                int minInd2 = result.Count() - 1;
+                for (var i = 1; i < result.Count(); i++)
+                {
+                    if (result[i].Length < result[minInd1].Length)
                     {
-                                int minInd1 = 0;
-                                int minInd2 = result.Count() - 1;
-                                for (var i = 1; i < result.Count(); i++)
-                                {
-                                    if (result[i].Length < result[minInd1].Length)
-                            {
-				                minInd1 = i;
-			                }
-		                }
-		                if (minInd2 == minInd1) 
-                                {
-			                minInd2--;
-		                }
-                        for (var i = result.Count() - 2; i >= 0; i--)
-                        {
-                            if (result[i].Length < result[minInd2].Length && i != minInd1)
-                            {
-				                minInd2 = i;
-			                }
-		                }
-                        result.Add(result[minInd1] + result[minInd2]);
-                        result.Remove(Math.Max(minInd1, minInd2).ToString());
-                        result.Remove(Math.Min(minInd1, minInd2).ToString());
-	                }
+                        minInd1 = i;
+                    }
+                }
+                if (minInd2 == minInd1)
+                {
+                    minInd2--;
+                }
+                for (var i = result.Count() - 2; i >= 0; i--)
+                {
+                    if (result[i].Length < result[minInd2].Length && i != minInd1)
+                    {
+                        minInd2 = i;
+                    }
+                }
+                result.Add(result[minInd1] + result[minInd2]);
+                result.Remove(Math.Max(minInd1, minInd2).ToString());
+                result.Remove(Math.Min(minInd1, minInd2).ToString());
+            }
             return result[0];
         }
 
-       
+        bool passwordCheckRegExp(string inputString)
+        {
+            return inputString.Length >= 5 && inputString.ToCharArray().Any(c => char.IsUpper(c)) &&
+                          inputString.ToCharArray().Any(c => char.IsLower(c)) &&
+                          inputString.ToCharArray().Any(c => char.IsNumber(c));
+        }
+
+        int uniqueDigitProducts(int[] a)
+        {
+
+            List<int> lstResult = new List<int>();
+            foreach (var item in a)
+            {
+                int[] intArray = item.ToString().ToCharArray().Select(c=>c-48).ToArray();
+                int intCount = 1;
+                for (int x = 0; x < intArray.Length; x++)
+                {
+                    intCount *= intArray[x];
+
+                }
+                lstResult.Add(intCount);
+                intCount = 1;
+
+            }
+
+            return lstResult.GroupBy(c => c).Select(c => c.First()).Count();
+
+        }
+
+
+
         static bool mersenne(int p)
         {
             BigInteger m = BigInteger.Pow(2, p) - 1;
@@ -103,17 +218,17 @@ namespace CFTheCore
             BigInteger b = (BigInteger)m;
             return Enumerable.Range(1, (int)m).Select(c=> new BigInteger(c)).Count(c => b % c == 0) == 2;
              */
- 
+
         }
 
 
         static string longestDigitsPrefix(string inputString)
         {
-            List<string> result = new List<string>();
+            List<int> result = new List<int>();
             for (int x = 0; x < inputString.Length; x++)
             {
                 if (char.IsNumber(inputString[x]))
-                    result.Add(inputString[x].ToString());
+                    result.Add(inputString[x]);
                 else
                     break;
             }
@@ -127,7 +242,7 @@ namespace CFTheCore
 
         }
 
-        string getMonthName(int mo) 
+        string getMonthName(int mo)
         {
             switch (mo)
             {
@@ -194,12 +309,12 @@ namespace CFTheCore
             return Enumerable.Range(1, n).Count(x => n % x == 0) == 2;
 
         }
-        
+
         static bool fibFib(int ff)
         {
             var x = Math.Sqrt(ff);
 
-            return isPerfectSquare(5 * x * x + 4) || isPerfectSquare(5 * x * x -4);
+            return isPerfectSquare(5 * x * x + 4) || isPerfectSquare(5 * x * x - 4);
         }
 
         static bool isPerfectSquare(double x)
@@ -275,7 +390,7 @@ namespace CFTheCore
 
             return result;
         }
-        
+
         static int lateRide(int n)
         {
             var hours = n / 60;
@@ -1119,13 +1234,13 @@ namespace CFTheCore
 
         }
 
-        static int arrayMaximalAdjacentDifference(int[] inputArray) 
+        static int arrayMaximalAdjacentDifference(int[] inputArray)
         {
-	        int result = -1;
-	        for (int x = 0; x < inputArray.Length - 1; x++) 
+            int result = -1;
+            for (int x = 0; x < inputArray.Length - 1; x++)
             {
                 result = Math.Max(result, Math.Abs(inputArray[x] - inputArray[x + 1]));
-	        }
+            }
             return result;
         }
 
@@ -1741,63 +1856,98 @@ namespace CFTheCore
             }
             return 0;
         }
+
+
     }
 }
 
-        /*
-    int result = equalPairOfBits(2, 3);
-    //int result = evenNumbersBeforeFixed(new int[] { 1, 4, 2, 6, 3, 1 }, 6);
-    //int x = digitDegree(99);
-    //bool bl = regularBracketSequence2("[()()]");
-    //int r = fncBinomial(10, 3);
-    //int piece = piecesOfDistinctLengths(13);
-    //int para = parabole(1, 2, 3, -1);
-    //int divide = divideAsLongAsPossible(36, 3);
-    //int last = lastDigit(999999, 1000000);
-    int result = arraySumAdjacentDifference(new int[] { 4, 7, 1, 2 });
-    int[] res = prefixSums(new int[] { 1, 2, 3 });
+/*
+int result = equalPairOfBits(2, 3);
+//int result = evenNumbersBeforeFixed(new int[] { 1, 4, 2, 6, 3, 1 }, 6);
+//int x = digitDegree(99);
+//bool bl = regularBracketSequence2("[()()]");
+//int r = fncBinomial(10, 3);
+//int piece = piecesOfDistinctLengths(13);
+//int para = parabole(1, 2, 3, -1);
+//int divide = divideAsLongAsPossible(36, 3);
+//int last = lastDigit(999999, 1000000);
+int result = arraySumAdjacentDifference(new int[] { 4, 7, 1, 2 });
+int[] res = prefixSums(new int[] { 1, 2, 3 });
 
-    var a = new string[] { };
-    string[] b = null;
-    var c = new string[] { "hello" };
+var a = new string[] { };
+string[] b = null;
+var c = new string[] { "hello" };
 
-    var aa = a.Any();
-    var bb = (b != null) && b.Any();
-    var cc = c.Any();
+var aa = a.Any();
+var bb = (b != null) && b.Any();
+var cc = c.Any();
 
-    var aaa = a.IsNullOrEmpty();
-    var bbb = a.IsNullOrEmpty();
-    var ccc = c.IsNullOrEmpty();
-    int res1 = exerciseElaboration(5, 1);
-    int intNextPrime = nextPrime(8);
+var aaa = a.IsNullOrEmpty();
+var bbb = a.IsNullOrEmpty();
+var ccc = c.IsNullOrEmpty();
+int res1 = exerciseElaboration(5, 1);
+int intNextPrime = nextPrime(8);
 
 */
 
-        /* Inputs
+/* Inputs
 
 //var even = new int[] { 1, 2, 3, 4, 5 }.Where(c => c % 2 == 0).ToArray();
-    var ek = evenNumbersBeforeFixed(new int[]{1, 4, 2, 6, 3, 1}, 6);
-    var res = "100100100100101011110101101".ToCharArray()
-        .GroupBy(c => c).ToDictionary(c => c.Key, c => c.Count());
-    //100100100100101011110101101
-    //100100100100101011110101101
-    //100100100100101011110101101
+var ek = evenNumbersBeforeFixed(new int[]{1, 4, 2, 6, 3, 1}, 6);
+var res = "100100100100101011110101101".ToCharArray()
+.GroupBy(c => c).ToDictionary(c => c.Key, c => c.Count());
+//100100100100101011110101101
+//100100100100101011110101101
+//100100100100101011110101101
 
-    //var proper = properOrImproper(new int[] { -3, 3 });
-    //var lucky = isLuckyNumber(47);
-    //var prime = primeFactors(100);
-    //var dec = decipher("code");
-    //var wallis = wallisFormula(3);
-    var bobo = Convert.ToInt64("10010010010010101111010110100000000000011111111111111", 2);
-    var bit = 10010010010010 | 01011110101101; 
-    var bit2 = bobo << 2;
-    //1001001001001 0 1011110101101
-    //var bitresult = dabbit("1001001001001 0 1011110101101", 'l');
+//var proper = properOrImproper(new int[] { -3, 3 });
+//var lucky = isLuckyNumber(47);
+//var prime = primeFactors(100);
+//var dec = decipher("code");
+//var wallis = wallisFormula(3);
+var bobo = Convert.ToInt64("10010010010010101111010110100000000000011111111111111", 2);
+var bit = 10010010010010 | 01011110101101; 
+var bit2 = bobo << 2;
+//1001001001001 0 1011110101101
+//var bitresult = dabbit("1001001001001 0 1011110101101", 'l');
 
-    var bebe = 11111111111111 | 0000000000000;
+var bebe = 11111111111111 | 0000000000000;
 
-    var returndab = dabbit("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111001001001001010111101011010010101101010101010101010101100100100101010101001001001001001001010101001001001001111111100", 'l');
+var returndab = dabbit("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111001001001001010111101011010010101101010101010101010101100100100101010101001001001001001001010101001001001001111111100", 'l');
 
-    var fncFibo = extendedFibonacci(27, 90, 628);
+var fncFibo = extendedFibonacci(27, 90, 628);
 
+
+ int swapping = swapNeighbouringDigits(1234);
+            int indexing = arrayMinimumAboveBound(new int[] { 1, 4, 10, 5, 2 }, 1);
+            int x = 21 % 1;
+            bool stacking = stackIt(21);
+            int c = 1;
+            for (; 21 % c++ > 0; c++)
+            {
+                if (21 % c > 0)
+                    Console.WriteLine("Test");
+                //break;
+            }
+            int b = 1;
+            for (; 21 % b++ > 0; )
+            {
+                if (21 % b > 0)
+                    Console.WriteLine("Test");
+                //break;
+            }
+
+            if (0 > 0)
+                Console.WriteLine("Test");
+
+            bool fib = fibFib(100);
+
+            string xSpace = "Hello Hello Hello Hello";
+            int count = xSpace.ToCharArray().Count(d => char.IsWhiteSpace(d));
+
+            var laban = Math.Sqrt(125) % 1;
+
+            string vv = longestDigitsPrefix("123aa1");
+            bool mer = mersenne(89);
+  
 */
