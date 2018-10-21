@@ -1840,6 +1840,7 @@ namespace CFTheCore
             return n.ToString().ToCharArray().Select(c => c - 48).Sum();
         }
 
+        //Attribute
         int arrayPacking(int[] a)
         {
             if (1 <= a.Length && a.Length <= 4)
