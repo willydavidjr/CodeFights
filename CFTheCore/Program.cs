@@ -19,6 +19,18 @@ namespace CFTheCore
 
             int longes = longestSubstring("abcdabcdabcabcabcd", 3);
         }
+        
+        static int maxDivisor(int left, int right, int divisor)
+        {
+            for (int x = right; x >= left; x--)
+            {
+                if (x % divisor == 0)
+                    return x;
+            }
+
+            return -1;
+            // return Enumerable.Range(left, right).Where(x => x % divisor == 0).Max();
+        }
 
         static int longestSubstring(string s, int m)
         {
