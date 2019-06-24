@@ -35,6 +35,22 @@ namespace CFTheCore
 
         }
         
+         /*
+            Using recursive function, find the sum of squares of all integers from 1 up to and including given N.
+        */
+        
+        static int sumOfSquares(int n)
+        {
+            if (n == 0){
+                return 0;
+            }
+            if (n == 1){
+                return 1;
+            }
+            var square = n * n;
+            return square + sumSquare(n - 1);
+        }
+        
         static int maxDivisor(int left, int right, int divisor)
         {
             for (int x = right; x >= left; x--)
